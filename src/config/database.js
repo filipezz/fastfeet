@@ -1,5 +1,5 @@
 module.exports = {
-  /* dialect: 'postgres',
+  dialect: 'postgres',
   host: 'localhost',
   username: 'postgres',
   password: 'docker',
@@ -8,5 +8,5 @@ module.exports = {
     timestamps: true,
     underscored: true,
     underscoredAll: true,
-  }, */
+  },
 };

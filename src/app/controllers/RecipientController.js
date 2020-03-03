@@ -7,14 +7,14 @@ class RecipientController {
       name: Yup.string()
         .required()
         .min(3),
-      rua: Yup.string().required(),
-      numero: Yup.string().required(),
-      complemento: Yup.string(),
-      estado: Yup.string()
+      street: Yup.string().required(),
+      number: Yup.string().required(),
+      complement: Yup.string(),
+      state: Yup.string()
         .length(2)
         .required(),
-      cidade: Yup.string().required(),
-      cep: Yup.string()
+      city: Yup.string().required(),
+      zip: Yup.string()
         .required()
         .length(8),
     });
@@ -38,12 +38,12 @@ class RecipientController {
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().min(3),
-      rua: Yup.string(),
-      numero: Yup.string(),
-      complemento: Yup.string(),
-      estado: Yup.string().length(2),
-      cidade: Yup.string(),
-      cep: Yup.string()
+      street: Yup.string(),
+      number: Yup.string(),
+      complement: Yup.string(),
+      state: Yup.string().length(2),
+      city: Yup.string(),
+      zip: Yup.string()
         .length(8)
         .when(['rua', 'numero', 'estado', 'cidade'], {
           is: (rua, numero, estado, cidade) =>
@@ -69,22 +69,22 @@ class RecipientController {
 
     const {
       name,
-      rua,
-      numero,
-      complemento,
-      estado,
-      cidade,
-      cep,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      zip,
     } = await recipient.update(req.body);
 
     return res.json({
       name,
-      rua,
-      numero,
-      complemento,
-      estado,
-      cidade,
-      cep,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      zip,
     });
   }
 
@@ -100,21 +100,21 @@ class RecipientController {
     const { id } = req.params;
     const {
       name,
-      rua,
-      numero,
-      complemento,
-      estado,
-      cidade,
-      cep,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      zip,
     } = await Recipient.findByPk(id);
     return res.json({
       name,
-      rua,
-      numero,
-      complemento,
-      estado,
-      cidade,
-      cep,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      zip,
     });
   }
 }

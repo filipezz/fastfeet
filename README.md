@@ -80,8 +80,8 @@ POST | /users | - | `{ email, password }` |
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 GET | /deliveryman | - |
-POST | /deliveryman | - | { name,email }
-PUT | /deliveryman/:id | deliveryman_id | { name, email, avatar_id }
+POST | /deliveryman | - | `{ name,email }`
+PUT | /deliveryman/:id | deliveryman_id | `{ name, email, avatar_id }`
 DELETE | /deliveryman/:id | deliveryman_id | 
 
 ### Destinatários
@@ -91,9 +91,9 @@ DELETE | /deliveryman/:id | deliveryman_id |
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 GET | /recipients | - |
-POST | /recipients | - | { name, street, number, complement, state, city, zip }
+POST | /recipients | - | `{ name, street, number, complement, state, city, zip }`
 GET | /recipients/:id | recipient_id |
-PUT | /recipients/:id | recipient_id | { name, street, number, complement, state, city, zip }
+PUT | /recipients/:id | recipient_id | `{ name, street, number, complement, state, city, zip }`
 DELETE | /recipients/:id | recipient_id | 
 
 ### Pedidos
@@ -103,8 +103,8 @@ DELETE | /recipients/:id | recipient_id |
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 GET | /orders | - |
-POST | /orders | - | { product, recipient_id , deliveryman_id }
-PUT | /orders/:id | order_id | { product, recipient_id , deliveryman_id }
+POST | /orders | - | `{ product, recipient_id , deliveryman_id }`
+PUT | /orders/:id | order_id | `{ product, recipient_id , deliveryman_id }`
 DELETE | /orders/:id | order_id | 
 DELETE | /deliveries/problem/:problem_id/cancel | :problem_id, | - | Cancela um pedido baseado no ID do problema da entrega 
 
@@ -116,7 +116,7 @@ DELETE | /deliveries/problem/:problem_id/cancel | :problem_id, | - | Cancela um 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 GET | /deliveryman/:deliveryman_id | deliveryman_id |
-PUT | /deliveryman/:deliveryman_id/order/:order_id | deliveryman_id, order_id | { start_date } | <strong>Queries</strong><br/> "deliveried=true" lista todas os pedidos entregues. "deliveried=false=" lista todas as não entregues. Sem query retorna todas as entregas já registradas do entregador
+PUT | /deliveryman/:deliveryman_id/order/:order_id | deliveryman_id, order_id | `{ start_date }` | <strong>Queries</strong><br/> "deliveried=true" lista todas os pedidos entregues. "deliveried=false=" lista todas as não entregues. Sem query retorna todas as entregas já registradas do entregador
 PUT | /deliveryman/:deliveryman_id/order/:order_id/end_delivery | deliveryman_id, order_id | { end_date, signature_id } | Finaliza entrega
 
 
@@ -129,15 +129,15 @@ PUT | /deliveryman/:deliveryman_id/order/:order_id/end_delivery | deliveryman_id
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 GET | //deliveries/problems | - | 
-POST | /deliveries/:order_id/problems | order_id | { description }
+POST | /deliveries/:order_id/problems | order_id | `{ description }`
 GET | /deliveries/:order_id/problems | order_id | - | Lista todos os problemas com determinada entrega
 
 ### Arquivos
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
-GET | /files | - | Multipart form:<strong>File</strong>
-GET | /signature | - | Multipart form:<strong>File</strong>
+GET | /files | - | `Multipart form: <strong>File</strong>`
+GET | /signature | - | `Multipart form: <strong>File</strong>`
 
 
 ## :memo: License

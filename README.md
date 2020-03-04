@@ -138,7 +138,8 @@ Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
 
 GET | /files | - | -
-GET |/signature | - | -
+GET | /signature | - | -
+
 
 ## :memo: License
 

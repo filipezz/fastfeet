@@ -136,7 +136,6 @@ GET | /deliveries/:order_id/problems | order_id | - | Lista todos os problemas c
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
-
 GET | /files | - | 
 GET | /signature | - | 
 

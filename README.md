@@ -136,8 +136,8 @@ GET | /deliveries/:order_id/problems | order_id | - | Lista todos os problemas c
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
-GET | /files | - | 
-GET | /signature | - | 
+GET | /files | - | Multipart form:<strong>File</strong>
+GET | /signature | - | Multipart form:<strong>File</strong>
 
 
 ## :memo: License

@@ -75,7 +75,7 @@ POST | /users | - | `{ email, password }` |
 
 ### CRUD Entregadores
 
-* Roda apenas para Administradores. <strong>Requer autenticação</strong>
+* Rota apenas para Administradores. <strong>Requer autenticação</strong>
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
@@ -86,7 +86,7 @@ DELETE | /deliveryman/:id | deliveryman_id |
 
 ### Destinatários
 
-* Roda apenas para Administradores. <strong>Requer autenticação</strong>
+* Rota apenas para Administradores. <strong>Requer autenticação</strong>
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------
@@ -98,7 +98,7 @@ DELETE | /recipients/:id | recipient_id |
 
 ### Pedidos
 
-* Roda apenas para Administradores. <strong>Requer autenticação</strong>
+* Rota apenas para Administradores. <strong>Requer autenticação</strong>
 
 Método | URI | Parêmtros | Body | Descrição
 -------|-----|-----------|------|-----------

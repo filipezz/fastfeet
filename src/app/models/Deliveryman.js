@@ -17,7 +17,6 @@ class Deliveryman extends Model {
     this.belongsTo(models.File, {
       foreignKey: 'avatar_id',
       as: 'avatar',
-      constraints: false,
     });
   }
 }

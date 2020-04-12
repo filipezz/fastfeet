@@ -56,9 +56,15 @@ class OrderController {
         'recipient_id',
         'start_date',
         'end_date',
+        'canceled_at',
         'past',
       ],
       include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'city', 'state'],
+        },
         {
           model: Deliveryman,
           as: 'deliveryman',

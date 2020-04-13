@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+
 import Recipient from '../models/Recipient';
 
 class RecipientController {
@@ -9,7 +11,7 @@ class RecipientController {
         .min(3),
       street: Yup.string().required(),
       number: Yup.string().required(),
-      complement: Yup.string(),
+      complement: Yup.string().required(),
       state: Yup.string()
         .length(2)
         .required(),
@@ -31,6 +33,18 @@ class RecipientController {
   }
 
   async index(req, res) {
+    if (req.query.q) {
+      const { q } = req.query;
+
+      const recipients = await Recipient.findAll({
+        where: {
+          name: {
+            [Op.iLike]: `%${q}%`,
+          },
+        },
+      });
+      return res.json(recipients);
+    }
     const recipients = await Recipient.findAll();
     return res.json(recipients);
   }

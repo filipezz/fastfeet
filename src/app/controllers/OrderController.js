@@ -127,6 +127,45 @@ class OrderController {
     return res.json(orders);
   }
 
+  async show(req, res) {
+    const { order_id } = req.params;
+
+    const orders = await Order.findByPk(order_id, {
+      order: [['id', 'DESC']],
+      attributes: [
+        'id',
+        'product',
+        'signature_id',
+        'deliveryman_id',
+        'recipient_id',
+        'start_date',
+        'end_date',
+        'canceled_at',
+        'past',
+      ],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'street', 'city', 'state', 'zip'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'avatar_id', 'email'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['path', 'url'],
+            },
+          ],
+        },
+      ],
+    });
+    return res.json(orders);
+  }
+
   async delete(req, res) {
     const { order_id } = req.params;
     const order = await Order.findByPk(order_id, {

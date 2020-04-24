@@ -30,12 +30,7 @@ class DeliverymenController {
       return res.status(400).json({ error: 'Deliveryman already registered' });
     }
     const { name, email, avatar_id } = req.body;
-    const avatar = await File.findByPk(avatar_id);
-    if (avatar) {
-      return res
-        .status(400)
-        .json({ error: 'This profile picture is already being used' });
-    }
+
     const deliveryman = await Deliveryman.create({
       name,
       email,

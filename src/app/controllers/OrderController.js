@@ -48,6 +48,8 @@ class OrderController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const pageLimit = 5;
     if (req.query.q) {
       const { q } = req.query;
       const orders = await Order.findAll({
@@ -93,6 +95,8 @@ class OrderController {
 
     const orders = await Order.findAll({
       order: [['id', 'DESC']],
+      limit: pageLimit,
+      offset: (page - 1) * 5,
       attributes: [
         'id',
         'product',
@@ -124,6 +128,11 @@ class OrderController {
         },
       ],
     });
+    const totalPages = await Order.findAndCountAll();
+
+    res.header('currentPage', page);
+    res.header('pages', Math.ceil(totalPages.count / pageLimit));
+
     return res.json(orders);
   }
 

@@ -51,7 +51,11 @@ class DeliveryProblemController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const pageLimit = 5;
     const ordersWithDeliveryProblems = await DeliveryProblem.findAll({
+      limit: pageLimit,
+      offset: (page - 1) * 5,
       attributes: ['id', 'description'],
       include: [
         {
@@ -78,6 +82,11 @@ class DeliveryProblemController {
     if (!ordersWithDeliveryProblems.length) {
       return res.status(400).json({ error: 'There are no delivery problems' });
     }
+    const totalPages = await DeliveryProblem.findAndCountAll();
+
+    res.header('currentPage', page);
+    res.header('pages', Math.ceil(totalPages.count / pageLimit));
+
     return res.json(ordersWithDeliveryProblems);
   }
 

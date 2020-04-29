@@ -23,7 +23,7 @@ routes.get('/', (req, res) => {
 routes.post('/users', SessionController.store);
 
 routes.post('/signature', upload.single('signature'), FileController.store);
-routes.get('/deliveryman/:deliveryman_id', DeliveryStatusController.index);
+routes.get('/deliverymen/:deliveryman_id', DeliveryStatusController.index);
 routes.put(
   '/deliveryman/:deliveryman_id/order/:order_id',
   DeliveryStatusController.update
@@ -49,6 +49,7 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/deliveryman', DeliverymanController.store);
 routes.get('/deliveryman', DeliverymanController.index);
+routes.get('/deliveryman/:id', DeliverymanController.show);
 routes.delete('/deliveryman/:id', DeliverymanController.delete);
 routes.put('/deliveryman/:id', DeliverymanController.update);
 

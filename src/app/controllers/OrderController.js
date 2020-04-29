@@ -50,9 +50,12 @@ class OrderController {
   async index(req, res) {
     const { page = 1 } = req.query;
     const pageLimit = 5;
+
     if (req.query.q) {
       const { q } = req.query;
       const orders = await Order.findAll({
+        limit: pageLimit,
+        offset: (page - 1) * 5,
         where: {
           product: {
             [Op.iLike]: `%${q}%`,
@@ -90,6 +93,11 @@ class OrderController {
           },
         ],
       });
+      const totalPages = orders.length;
+
+      res.header('currentPage', page);
+      res.header('pages', Math.ceil(totalPages / pageLimit));
+
       return res.json(orders);
     }
 

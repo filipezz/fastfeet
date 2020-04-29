@@ -33,19 +33,35 @@ class RecipientController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const pageLimit = 5;
     if (req.query.q) {
       const { q } = req.query;
 
       const recipients = await Recipient.findAll({
+        limit: pageLimit,
+        offset: (page - 1) * 5,
         where: {
           name: {
             [Op.iLike]: `%${q}%`,
           },
         },
       });
+      const totalPages = recipients.length;
+
+      res.header('currentPage', page);
+      res.header('pages', Math.ceil(totalPages / pageLimit));
       return res.json(recipients);
     }
-    const recipients = await Recipient.findAll();
+    const recipients = await Recipient.findAll({
+      limit: pageLimit,
+      offset: (page - 1) * 5,
+    });
+    const totalPages = await Recipient.findAndCountAll();
+
+    res.header('currentPage', page);
+    res.header('pages', Math.ceil(totalPages.count / pageLimit));
+
     return res.json(recipients);
   }
 

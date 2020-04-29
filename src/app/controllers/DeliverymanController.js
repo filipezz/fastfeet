@@ -40,9 +40,15 @@ class DeliverymenController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const pageLimit = 5;
+
     if (req.query.q) {
       const { q } = req.query;
       const deliverymen = await Deliveryman.findAll({
+        limit: pageLimit,
+        offset: (page - 1) * 5,
+        order: [['id', 'DESC']],
         where: {
           name: {
             [Op.iLike]: `%${q}%`,
@@ -53,9 +59,33 @@ class DeliverymenController {
           { model: File, as: 'avatar', attributes: ['name', 'path', 'url'] },
         ],
       });
+      const totalPages = deliverymen.length;
+
+      res.header('currentPage', page);
+      res.header('pages', Math.ceil(totalPages / pageLimit));
       return res.json(deliverymen);
     }
+
     const deliverymen = await Deliveryman.findAll({
+      order: [['id', 'DESC']],
+      limit: pageLimit,
+      offset: (page - 1) * 5,
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        { model: File, as: 'avatar', attributes: ['name', 'path', 'url'] },
+      ],
+    });
+    const totalPages = await Deliveryman.findAndCountAll();
+
+    res.header('currentPage', page);
+    res.header('pages', Math.ceil(totalPages.count / pageLimit));
+    return res.json(deliverymen);
+  }
+
+  async show(req, res) {
+    const { id } = req.params;
+
+    const deliverymen = await Deliveryman.findByPk(id, {
       attributes: ['id', 'name', 'email', 'avatar_id'],
       include: [
         { model: File, as: 'avatar', attributes: ['name', 'path', 'url'] },

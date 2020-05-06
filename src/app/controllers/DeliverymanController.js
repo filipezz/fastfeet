@@ -110,7 +110,7 @@ class DeliverymenController {
     const schema = Yup.object().shape({
       name: Yup.string().min(3),
       email: Yup.string().email(),
-      avatar_id: Yup.number(),
+      avatar_id: Yup.number().nullable(),
     });
     if (!(await schema.isValid(req.body))) {
       const errors = await schema

@@ -79,9 +79,7 @@ class DeliveryProblemController {
         },
       ],
     });
-    if (!ordersWithDeliveryProblems.length) {
-      return res.status(400).json({ error: 'There are no delivery problems' });
-    }
+
     const totalPages = await DeliveryProblem.findAndCountAll();
 
     res.header('currentPage', page);

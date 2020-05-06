@@ -31,11 +31,11 @@ class OrderController {
 
     const deliveryman = await Deliveryman.findByPk(deliveryman_id);
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman does not exists' });
+      return res.status(404).json({ error: 'Deliveryman does not exists' });
     }
     const recipient = await Recipient.findByPk(recipient_id);
     if (!recipient) {
-      return res.status(400).json({ error: 'Recipient does not exists' });
+      return res.status(404).json({ error: 'Recipient does not exists' });
     }
 
     const order = await Order.create({
@@ -164,12 +164,12 @@ class OrderController {
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['name', 'street', 'city', 'state', 'zip'],
+          attributes: ['id', 'name', 'street', 'city', 'state', 'zip'],
         },
         {
           model: Deliveryman,
           as: 'deliveryman',
-          attributes: ['name', 'avatar_id', 'email'],
+          attributes: ['id', 'name', 'avatar_id', 'email'],
           include: [
             {
               model: File,
@@ -180,6 +180,9 @@ class OrderController {
         },
       ],
     });
+    if (!orders) {
+      return res.status(404).json({ error: 'Order does not exists' });
+    }
     return res.json(orders);
   }
 
@@ -201,23 +204,21 @@ class OrderController {
     });
 
     if (!order) {
-      return res.status(400).json({ error: 'Order does not exists' });
+      return res.status(404).json({ error: 'Order does not exists' });
     }
-    const cancelledDate = new Date().toJSON();
 
     if (!((await order.canceled_at) === null)) {
       return res
         .status(400)
-        .json({ error: 'This order has already been deleted' });
+        .json({ error: 'This order has already been canceled' });
     }
-    order.canceled_at = cancelledDate;
-    await order.save();
 
     await Queue.add(CancellationMail.key, {
       order,
     });
+    await order.destroy();
 
-    return res.json(order);
+    return res.status(200).json();
   }
 
   async update(req, res) {
@@ -257,19 +258,24 @@ class OrderController {
     });
 
     if (!order) {
-      return res.status(400).json({ error: 'Order does not exists' });
+      return res.status(404).json({ error: 'Order does not exists' });
+    }
+    if ((await order.canceled_at) === null) {
+      return res
+        .status(400)
+        .json({ error: 'This order has already been canceled' });
     }
     const { deliveryman_id, recipient_id } = req.body;
     const deliveryman = await Deliveryman.findByPk(deliveryman_id);
 
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman does not exists' });
+      return res.status(404).json({ error: 'Deliveryman does not exists' });
     }
 
     const recipient = await Recipient.findByPk(recipient_id);
 
     if (!recipient) {
-      return res.status(400).json({ error: 'Recipient does not exists' });
+      return res.status(404).json({ error: 'Recipient does not exists' });
     }
 
     await order.update(req.body);

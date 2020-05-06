@@ -11,14 +11,10 @@ class RecipientController {
         .min(3),
       street: Yup.string().required(),
       number: Yup.string().required(),
-      complement: Yup.string().required(),
-      state: Yup.string()
-        .length(2)
-        .required(),
+      complement: Yup.string(),
+      state: Yup.string().required(),
       city: Yup.string().required(),
-      zip: Yup.string()
-        .required()
-        .length(8),
+      zip: Yup.string().required(),
     });
     if (!(await schema.isValid(req.body))) {
       const errors = await schema
@@ -39,6 +35,8 @@ class RecipientController {
       const { q } = req.query;
 
       const recipients = await Recipient.findAll({
+        order: [['id', 'DESC']],
+
         limit: pageLimit,
         offset: (page - 1) * 5,
         where: {
@@ -54,6 +52,8 @@ class RecipientController {
       return res.json(recipients);
     }
     const recipients = await Recipient.findAll({
+      order: [['id', 'DESC']],
+
       limit: pageLimit,
       offset: (page - 1) * 5,
     });
@@ -71,16 +71,14 @@ class RecipientController {
       street: Yup.string(),
       number: Yup.string(),
       complement: Yup.string(),
-      state: Yup.string().length(2),
+      state: Yup.string(),
       city: Yup.string(),
-      zip: Yup.string()
-        .length(8)
-        .when(['rua', 'numero', 'estado', 'cidade'], {
-          is: (rua, numero, estado, cidade) =>
-            rua || numero || estado || cidade === true,
-          then: Yup.string().required(),
-          otherwise: Yup.string(),
-        }),
+      zip: Yup.string().when(['rua', 'numero', 'estado', 'cidade'], {
+        is: (rua, numero, estado, cidade) =>
+          rua || numero || estado || cidade === true,
+        then: Yup.string().required(),
+        otherwise: Yup.string(),
+      }),
     });
     if (!(await schema.isValid(req.body))) {
       const errors = await schema
